@@ -1,0 +1,51 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Tv Shows!</title>
+</head>
+<body>
+    <div class="header">
+        <h1>Coding Dojo Wall</h1>
+        <h3>Welcome {{request.session.user}}</h3>
+        <a href="/reset">LOg oFf</a>
+    </div>
+    <div>
+        {% for message in error %}                           <!-- check if there are any messages -->
+            <p>{{message}}</p>                   <!-- display each message in a paragraph tag -->
+       {% endfor %}
+    </div>
+    <div class="messagecreator">
+        <form action="/create_message" method="POST">
+        {% csrf_token %}
+        <h3>Post a message</h3>
+        <textarea rows="6" cols="100" name="message_content"></textarea>
+        <input type="submit" name="" value="Post a message">
+        </form>
+    </div>
+    {% for x in user %}{% for y in messages %}
+    <div>
+        <p>{{x.first_name}} {{x.last_name}} - {{y.created_at}}</p>
+        <p>{{y.message_content}}</p>
+            <form action="/" method="POST">
+                <input type="submit" value="Delete">
+            </form>
+            {% endfor %}
+        {% for z in message.attached_comments.all %}
+        <p>{{z.comment_content}}</p>
+        <div class="commentcreator">
+            <form action="/create_comment" method="POST">
+                {% csrf_token %}
+                <h3>Post a comment</h3>
+                <input type="hidden" name="message_comment" value="{{x.id}}">
+                <textarea rows="4" cols="100" name="comment_content"></textarea>
+                <input type="submit" name="" value="Post a comment">
+            </form>
+        </div>
+    </div>
+    {% endfor %}
+    {% endfor %}
+
+</body>
+</html>
